@@ -1,36 +1,54 @@
-name: Trigger Qa-Cleanup 
-description: >
-  This action is used to invoke Qa-Cleanup Service in different environments
+name: Mixed inputs
 
 on:
   workflow_dispatch:
     inputs:
       environment:
-        reuqired: true
         type: choice
-        description: trigger in which env 
+        description: Who to greet
         options: 
         - dev
         - qa1
         - qa2
         - qa3 
         - staging
-      required: true
-      description: the name of the environment
-      aws-role-arn:
-        reuqired: true
-        description: the aws role's arn which were created in the Infra-GSM-Core
-        type: choice
-        options: 
-        - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-dev
-        - arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
-  
 jobs:
-  trigger-qacleanup-service:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "${{ inputs.environment }} using ${{ inputs.aws-role-arn }}"
-        shell: bash
+greet:
+  runs-on: ubuntu-latest
+
+  steps:
+  - name: Send greeting
+    run: echo "hello"     
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         reuqired: true
+#         type: choice
+#         description: trigger in which env 
+#         options: 
+#         - dev
+#         - qa1
+#         - qa2
+#         - qa3 
+#         - staging
+#       required: true
+#       description: the name of the environment
+#       aws-role-arn:
+#         reuqired: true
+#         description: the aws role's arn which were created in the Infra-GSM-Core
+#         type: choice
+#         options: 
+#         - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-dev
+#         - arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
+  
+# jobs:
+#   trigger-qacleanup-service:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - run: echo "${{ inputs.environment }} using ${{ inputs.aws-role-arn }}"
+#         shell: bash
       
            
 
