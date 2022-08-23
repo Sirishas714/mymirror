@@ -12,49 +12,30 @@ on:
         - qa2
         - qa3 
         - staging
-      aws-role-arn:
-        type: choice
-        description: Select role 
-        options: 
-        - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-${{ inputs.environment }}
-        - arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
  
 jobs:
   greet:
     runs-on: ubuntu-latest
     steps:
     - name: Send greeting
-      run: echo "hello ${{ inputs.environment }} is using ${{ inputs.aws-role-arn }} " 
+      run: echo "hello ${{ inputs.environment }}" 
+    - name: Determine role
+      uses: haya14busa/action-cond@v1
+      id: fetchRole
+      with:
+        cond: ${{ inputs.environment == 'staging' }}
+        if_false: arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-dev
+        if_true: arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
+    # - name: Configure AWS creds for the specific env / region / app
+    #   uses: aws-actions/configure-aws-credentials@master
+    #   with:
+    #     role-to-assume: ${{ steps.fetchRole.outputs.value }}
+    #     role-session-name: deploysession
+    #     aws-region: us-west-2
+    - name: Send greeting    
+      run: echo "hello ${{ inputs.environment }} is using ${{ steps.fetchRole.outputs.value  }} "  
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       environment:
-#         reuqired: true
-#         type: choice
-#         description: trigger in which env 
-#         options: 
-#         - dev
-#         - qa1
-#         - qa2
-#         - qa3 
-#         - staging
-#       required: true
-#       description: the name of the environment
-#       aws-role-arn:
-#         reuqired: true
-#         description: the aws role's arn which were created in the Infra-GSM-Core
-#         type: choice
-#         options: 
-#         - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-dev
-#         - arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
-  
-# jobs:
-#   trigger-qacleanup-service:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - run: echo "${{ inputs.environment }} using ${{ inputs.aws-role-arn }}"
-#         shell: bash
+
       
            
 
