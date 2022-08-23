@@ -17,8 +17,8 @@ on:
         description: Select Payload
         options: 
         - Clear Synchronizer execution history table
-        - A
-        - G  
+        - Clear ApplicationConfiguration service entries
+        - Clear GlobalStringLibrary tables data  
  
 jobs:
   greet:
@@ -37,10 +37,13 @@ jobs:
       run: echo "hello ${{ inputs.environment }} is using ${{ steps.fetchRole.outputs.value  }} and running ${{ inputs.payload }} " 
     - name: Clear Synchronizer
       if: ${{ inputs.payload == 'Clear Synchronizer execution history table' }}
-      run: echo "hello Synchronizer"
+      run: echo "Clear Synchronizer"
+    - name: Clear GlobalString
+      if: ${{ inputs.payload == 'Clear GlobalStringLibrary tables data' }}
+      run: echo "Clear GlobalString"
     - name: Clear Appconfig
-      if: ${{ inputs.payload == 'A' }}
-      run: echo "hello Appconfig"
+      if: ${{ inputs.payload == 'Clear ApplicationConfiguration service entries' }}
+      run: echo "Clear Appconfig"  
 
 
       
