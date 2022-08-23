@@ -1,28 +1,37 @@
+name: Trigger Qa-Cleanup 
+description: >
+  This action is used to invoke Qa-Cleanup Service in different environments
+
 on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'environment'
-        required: true
-        type: environment
-        options:
+        reuqired: true
+        type: choice
+        description: trigger in which env 
+        options: 
+        - dev
         - qa1
         - qa2
-        - dev 
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true 
-        type: boolean 
-      tags:
-        description: 'Test scenario tags'
-        required: true 
-        type: string
-       
-
+        - qa3 
+        - staging
+      required: true
+      description: the name of the environment
+      aws-role-arn:
+        reuqired: true
+        description: the aws role's arn which were created in the Infra-GSM-Core
+        type: choice
+        options: 
+        - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-${{ inputs.environment }}
+        - arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
+  
 jobs:
-  print-tag:
+  trigger-qacleanup-service:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.print_tags }} 
     steps:
-      - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }}
+      - run: echo "${{ inputs.environment }} using ${{ inputs.aws-role-arn }}"
+        shell: bash
+      
+           
+
+    
