@@ -16,8 +16,8 @@ on:
         type: choice
         description: Select role 
         options: 
-        - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-dev
-        - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-staging
+        - arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-${{ inputs.environment }}
+        - arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
  
 jobs:
   greet:
