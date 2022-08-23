@@ -12,6 +12,13 @@ on:
         - qa2
         - qa3 
         - staging
+      payload:
+        type: choice
+        description: Select Payload
+        options: 
+        - Clear Synchronizer execution history table
+        - A
+        - G  
  
 jobs:
   greet:
@@ -26,14 +33,14 @@ jobs:
         cond: ${{ inputs.environment == 'staging' }}
         if_false: arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-${{ inputs.environment }}
         if_true: arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
-    # - name: Configure AWS creds for the specific env / region / app
-    #   uses: aws-actions/configure-aws-credentials@master
-    #   with:
-    #     role-to-assume: ${{ steps.fetchRole.outputs.value }}
-    #     role-session-name: deploysession
-    #     aws-region: us-west-2
     - name: Send greeting    
-      run: echo "hello ${{ inputs.environment }} is using ${{ steps.fetchRole.outputs.value  }} "  
+      run: echo "hello ${{ inputs.environment }} is using ${{ steps.fetchRole.outputs.value  }} and running ${{ inputs.payload }} " 
+    - name: Clear Synchronizer
+      if: ${{ inputs.payload == 'Clear Synchronizer execution history table' }}
+      run: echo "hello Synchronizer"
+    - name: Clear Appconfig
+      if: ${{ inputs.payload == 'A' }}
+      run: echo "hello Appconfig"
 
 
       
