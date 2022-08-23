@@ -24,7 +24,7 @@ jobs:
       id: fetchRole
       with:
         cond: ${{ inputs.environment == 'staging' }}
-        if_false: arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-dev
+        if_false: arn:aws:iam::373673428400:role/gha-role-gsm-cleanup-${{ inputs.environment }}
         if_true: arn:aws:iam::267474594073:role/gha-role-gsm-cleanup-staging
     # - name: Configure AWS creds for the specific env / region / app
     #   uses: aws-actions/configure-aws-credentials@master
