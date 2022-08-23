@@ -13,12 +13,11 @@ on:
         - qa3 
         - staging
 jobs:
-greet:
-  runs-on: ubuntu-latest
-
-  steps:
-  - name: Send greeting
-    run: echo "hello"     
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send greeting
+      run: echo "hello" 
 
 # on:
 #   workflow_dispatch:
