@@ -1,15 +1,14 @@
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
+      environment:
+        description: 'environment'
         required: true
-        default: 'warning' 
-        type: choice
+        type: environment
         options:
-        - info
-        - warning
-        - debug 
+        - qa1
+        - qa2
+        - dev 
       print_tags:
         description: 'True to print to STDOUT'
         required: true 
@@ -18,10 +17,7 @@ on:
         description: 'Test scenario tags'
         required: true 
         type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true 
+       
 
 jobs:
   print-tag:
