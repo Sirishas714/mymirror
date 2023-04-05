@@ -1,0 +1,39 @@
+name: "Lint PR"
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            fix
+            feat
+            build
+            chore
+            ci
+            docs
+            style
+            refactor
+            perf
+            test 
+          ignoreLabels: |
+            bot
+            ignore-semantic-pull-request
+      - name: Check Jira number in PR title
+        id: check_jira_number
+        run: |
+          jira_regex='[A-Z]+-[0-9]+'
+          title=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          if ! echo "$title" | grep -qE "$jira_regex"; then
+            echo "PR title does not contain a Jira number (e.g. fix: GCX-18292 {commit_message} )"
+            exit 1
+          fi 
