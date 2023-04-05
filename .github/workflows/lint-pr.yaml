@@ -32,7 +32,7 @@ jobs:
             ignore-semantic-pull-request
       - name: "Check Jira Ticket Number in PR Title"
         run: |
-          jira_regex='^[A-Z]{1,6}-[0-9]{1,6}.*$'
+          jira_regex='^[A-Z]{1,6}-[0-9]{1,6}\s'
           title=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
           if ! [[ "$title" =~ $jira_regex ]]; then
             echo "PR title does not contain a Jira ticket number in the expected format (e.g. fix: GCX-18292 {commit_message} )"
