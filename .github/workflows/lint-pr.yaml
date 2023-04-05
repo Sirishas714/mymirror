@@ -1,0 +1,43 @@
+name: "Lint PR"
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            fix
+            feat
+            build
+            chore
+            ci
+            docs
+            style
+            refactor
+            perf
+            test
+          scopes: |
+            [A-Z]{1,6}-\d{1,6}  
+          ignoreLabels: |
+            bot
+            ignore-semantic-pull-request
+      - name: "Check Jira Ticket Number in PR Title"
+        run: |
+          jira_regex='^[A-Z]{1,6}-[0-9]{1,6}.*$'
+          title=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          if ! [[ "$title" =~ $jira_regex ]]; then
+            echo "PR title does not contain a Jira ticket number in the expected format (e.g. fix: GCX-18292 {commit_message} )"
+            exit 1
+          fi
+      
+      
+   
