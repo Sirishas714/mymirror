@@ -26,7 +26,7 @@ jobs:
             perf
             test
           scopes: |
-            [A-Z]{1,6}-\d{1,6}  
+            [A-Z]+-\d+  
           ignoreLabels: |
             bot
             ignore-semantic-pull-request
