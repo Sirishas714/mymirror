@@ -1,6 +1,6 @@
 name: "Lint PR"
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - edited
@@ -24,18 +24,16 @@ jobs:
             style
             refactor
             perf
-            test
-          scopes: |
-            ABC-\d+
+            test 
           ignoreLabels: |
             bot
             ignore-semantic-pull-request
-      - name: Check Jira Ticket Number in PR Title
-        id: check_jira_ticket
+      - name: Check Jira number in PR title
+        id: check_jira_number
         run: |
-          jira_regex='^[a-z]+-[0-9]{1,6}\s'
-          title=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH" | xargs)
-          if ! [[ "$title" =~ $jira_regex ]]; then
-            echo "PR title does not contain a Jira ticket number in the expected format (e.g. fix: GCX-18292 {commit_message} )"
+          jira_regex='[A-Z]+-[0-9]+'
+          title=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          if ! echo "$title" | grep -qE "$jira_regex"; then
+            echo "PR title does not contain a Jira number (e.g. fix: GCX-18292 {commit_message} )"
             exit 1
-          fi
+          fi 
