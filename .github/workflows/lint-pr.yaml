@@ -34,6 +34,6 @@ jobs:
           jira_regex='[A-Z]+-[0-9]+'
           title=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
           if ! echo "$title" | grep -qE "$jira_regex"; then
-            echo "PR title does not contain a Jira number (e.g. fix: GCX-18292 {commit_message} )"
+            echo "PR title does not contain a Jira number (e.g. fix: GCX-18292 {commit_message} add )"
             exit 1
           fi 
